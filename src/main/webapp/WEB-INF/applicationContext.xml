@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context-2.5.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+        default-autowire="byName" default-lazy-init="true">
+
+
+    <!-- 配置数据源 -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName">
+            <value>com.mysql.jdbc.Driver</value>
+        </property>
+        <property name="url">
+            <value>jdbc:mysql://dbk.jingl.wang:3306/dbk_express_test?useUnicode=true&amp;characterEncoding=utf-8 </value>
+        </property>
+        <property name="username">
+            <value>dbk</value>
+        </property>
+        <property name="password">
+            <value>DBKdbk2048</value>
+        </property>
+    </bean>
+
+    <!-- 配置SessionFactory -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+        destroy-method="destroy">
+        <property name="dataSource" ref="dataSource" />
+        <!-- 该包下所有的类会被当作实体类加载-->
+        <property name="packagesToScan" value="com.dbk.express.bean" />
+        <property name="hibernateProperties">
+            <props>    <!--  Hibernate属性 -->
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- 配置事务容器 -->
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <!-- 定义事务规则 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED" />
+            <tx:method name="modify*" propagation="REQUIRED" />
+            <tx:method name="del*" propagation="REQUIRED" />
+            <tx:method name="*" propagation="REQUIRED" />
+        </tx:attributes>
+    </tx:advice>
+    <!-- 定义事务入口 -->
+    <aop:config>
+        <aop:pointcut id="allDaoMethod" expression="execution(* com.dbk.express.dao.*.*(..))" />
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="allDaoMethod" />
+    </aop:config>
+
+    <!-- 配置HibernateTemplate-->
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <!-- DAO层配置 -->
+    <bean id="adminDAO" class="com.dbk.express.dao.AdminDAO">
+        <property name="hibernateTemplate" ref="hibernateTemplate" />
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="dialogDAO" class="com.dbk.express.dao.DialogDAO">
+
+    </bean>
+    <bean id="dormitoryDAO" class="com.dbk.express.dao.DormitoryDAO">
+        <property name="hibernateTemplate" ref="hibernateTemplate" />
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <!-- Service层配置 -->
+    <bean id="adminService" class="com.dbk.express.service.AdminService">
+        <property name="adminDAO" ref="adminDAO" />
+    </bean>
+    <bean id="dialogService" class="com.dbk.express.service.DialogService">
+        <property name="dialogDAO" ref="dialogDAO" />
+        <property name="dormitoryDAO" ref="dormitoryDAO" />
+    </bean>
+</beans>
+
+

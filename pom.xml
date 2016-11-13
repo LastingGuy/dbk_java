@@ -58,16 +58,33 @@
             <version>${org.springframework.version}</version>
         </dependency>
         <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-orm</artifactId>
+          <version>${org.springframework.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${org.springframework.version}</version>
         </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-aop</artifactId>
+          <version>${org.springframework.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-aspects</artifactId>
+          <version>${org.springframework.version}</version>
+      </dependency>
+
         <!--② 依赖的持久化类库-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
         </dependency>
+
         <!--③ 依赖的公共类库-->
         <dependency>
             <groupId>commons-dbcp</groupId>
@@ -89,6 +106,7 @@
             <artifactId>com.springsource.net.sf.cglib</artifactId>
             <version>2.2.0</version>
         </dependency>
+
         <!--④ 依赖的WEB类库-->
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
@@ -112,6 +130,7 @@
             <artifactId>jstl</artifactId>
             <version>${jstl.version}</version>
         </dependency>
+
         <!--⑤ 依赖的测试类库-->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -124,16 +143,7 @@
             <version>${testng.version}</version>
         </dependency>
 
-        <!--    <dependency>
-              <groupId>org.codehaus.jackson</groupId>
-              <artifactId>jackson-core-asl</artifactId>
-              <version>1.9.13</version>
-            </dependency>
-            <dependency>
-              <groupId>org.codehaus.jackson</groupId>
-              <artifactId>jackson-mapper-asl</artifactId>
-              <version>1.9.13</version>
-            </dependency>-->
+        <!--  Json配置 -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
