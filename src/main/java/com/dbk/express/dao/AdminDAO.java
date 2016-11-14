@@ -38,4 +38,10 @@ public class AdminDAO<T> {
 
        this.hibernateTemplate.getSessionFactory().getCurrentSession().save(object);
     }
+
+    public String getSchoolNameByAdminID(String id)
+    {
+        String name = (String)this.hibernateTemplate.find("select school.schoolName from DbkAdminEntity admin,DbkSchoolEntity school where admin.adminSchool = school.schoolId and admin.adminId=?",id).get(0);
+        return name;
+    }
 }

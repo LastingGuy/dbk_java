@@ -30,7 +30,10 @@ public class DormitoryDAO<T> {
     }
 
     //根据学校获取寝室楼集合
-    public List<T> find(){
-        return null;
+    public List<T> getDorsByAdminID(String id)
+    {
+            List<T> list = (List<T>) this.hibernateTemplate.find("select d.dormitoryAddress from DbkDormitoryEntity d, DbkAdminEntity s  where d.schoolId = s.adminSchool and s.adminId=?",id);
+
+        return list;
     }
 }

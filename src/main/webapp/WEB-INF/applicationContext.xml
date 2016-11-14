@@ -93,6 +93,9 @@
         <property name="dialogDAO" ref="dialogDAO" />
         <property name="dormitoryDAO" ref="dormitoryDAO" />
     </bean>
+    <bean id="dormitoryService" class="com.dbk.express.service.DormitoryService">
+        <property name="dormitoryDAO" ref="dormitoryDAO" />
+    </bean>
 </beans>
 
 
