@@ -191,6 +191,15 @@
             <artifactId>hibernate-jpa-2.0-api</artifactId>
             <version>1.0.0.Final</version>
         </dependency>
+
+      <!-- -->
+      <dependency>
+          <groupId>taobao</groupId>
+          <artifactId>dayu</artifactId>
+          <version>1.0</version>
+          <scope>system</scope>
+          <systemPath>${project.basedir}/lib/taobao-sdk-java-auto_1455552377940-20160607.jar</systemPath>
+      </dependency>
     </dependencies>
 
   <build>
