@@ -67,6 +67,7 @@ public class SchoolController {
     @ResponseBody
     public String dial()
     {
+        dialogService.dial();
         return "";
     }
 }
