@@ -68,6 +68,6 @@ public class SchoolController {
     public String dial()
     {
         dialogService.dial();
-        return "";
+        return "sadsada";
     }
 }
