@@ -78,7 +78,8 @@
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
     <bean id="dialogDAO" class="com.dbk.express.dao.DialogDAO">
-
+        <property name="hibernateTemplate" ref="hibernateTemplate" />
+        <property name="sessionFactory" ref="sessionFactory" />
     </bean>
     <bean id="dormitoryDAO" class="com.dbk.express.dao.DormitoryDAO">
         <property name="hibernateTemplate" ref="hibernateTemplate" />

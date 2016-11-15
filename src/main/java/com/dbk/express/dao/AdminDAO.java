@@ -30,7 +30,8 @@ public class AdminDAO<T> {
     }
 
     //插入数据
-    public void create(T object){
+    public void create(T object)
+    {
         //this.hibernateTemplate.save(object);
 
        /* Session session = sessionFactory.getCurrentSession();
