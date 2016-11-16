@@ -60,3 +60,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 src/main/resources/hibernate.cfg.xml
+*.iml
