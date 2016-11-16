@@ -2,14 +2,19 @@ package com.dbk.express.controller;
 
 import com.dbk.express.bean.DbkAdminEntity;
 import com.dbk.express.dao.AdminDAO;
+import com.dbk.express.pojo.ResponseGenerator;
 import com.dbk.express.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * Created by lenovo on 2016/11/10.
@@ -43,10 +48,21 @@ public class AdminController {
     }
 
     //登录验证
-    @RequestMapping(value="/login")
+    @RequestMapping(value="/login",method = RequestMethod.GET)
     @ResponseBody
-    public String login()
+    public Map login(@RequestParam("username") String username, @RequestParam("passwd") String passwd, HttpSession session)
     {
-        return "";
+        ResponseGenerator response  = new ResponseGenerator("login");
+        if(adminService.login(username,passwd))
+        {
+            session.setAttribute("username",username);
+            response.setSuccess(true);
+            response.setMsg("登陆成功");
+        }
+        else
+        {
+            response.setMsg("登陆失败");
+        }
+        return response.generate();
     }
 }

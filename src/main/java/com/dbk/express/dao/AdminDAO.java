@@ -39,6 +39,13 @@ public class AdminDAO<T> {
        this.hibernateTemplate.getSessionFactory().getCurrentSession().save(object);
     }
 
+    //登陆
+    public boolean login(String username,String passwd)
+    {
+        boolean isSuccess = this.hibernateTemplate.find("from DbkAdminEntity as a where a.adminId=? and a.adminPasswd=?",username,passwd).size()>0;
+        return isSuccess;
+    }
+
     public String getSchoolNameByAdminID(String id)
     {
         String name = (String)this.hibernateTemplate.find("select school.schoolName from DbkAdminEntity admin,DbkSchoolEntity school where admin.adminSchool = school.schoolId and admin.adminId=?",id).get(0);
