@@ -3,6 +3,7 @@ package com.dbk.express.controller;
 import com.dbk.express.bean.DbkAdminEntity;
 import com.dbk.express.bean.DbkDormitoryEntity;
 import com.dbk.express.dao.AdminDAO;
+import com.dbk.express.dao.DialogDAO;
 import com.dbk.express.dao.DormitoryDAO;
 import com.dbk.express.service.AdminService;
 import com.dbk.express.service.DialogService;
@@ -56,10 +57,10 @@ public class SchoolController {
     //获得寝室信息
     @RequestMapping(value = "getDors")
     @ResponseBody
-    public Map getDors()
+    public String getDors()
     {
-
-         return adminService.getSchoolNameAndDorsByAdminID("浙大城院");
+        Boolean flag = dialogService.getFinishedDialog("2");
+        return flag.toString();
     }
 
     //根据寝室号完成一键拨打

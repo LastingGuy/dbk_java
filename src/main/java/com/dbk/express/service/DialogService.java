@@ -43,7 +43,7 @@ public class DialogService<T> {
     public String dial()
     {
 
-        String url = "http://gw.api.taobao.com/router/rest";
+        String url = "http://gw.api.tbsandbox.com/router/rest";
         String appkey = "23531930";
         String secret = "d2542deb5da568dc053201c8f6758c23";
 
@@ -51,7 +51,7 @@ public class DialogService<T> {
         AlibabaAliqinFcTtsNumSinglecallRequest req = new AlibabaAliqinFcTtsNumSinglecallRequest();
         req.setExtend("12345");
         req.setTtsParamString("");
-        req.setCalledNum("17826875244");
+        req.setCalledNum("13732218844");
         req.setCalledShowNum("01053912805");
         req.setTtsCode("TTS_26080088");
         AlibabaAliqinFcTtsNumSinglecallResponse rsp;
@@ -65,5 +65,9 @@ public class DialogService<T> {
         }
 
         return "";
+    }
+
+    public Boolean getFinishedDialog(String id){
+        return dialogDAO.getFinishedDialog(id);
     }
 }
