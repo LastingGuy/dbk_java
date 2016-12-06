@@ -58,7 +58,7 @@ public class SchoolController {
 
 
     //按照单号进行拨打
-    @RequestMapping(value="/d")
+    @RequestMapping(value="/dial")
     @ResponseBody
     public String dial(@RequestParam("pickupid") Integer[] pickupid)
     {
@@ -68,7 +68,7 @@ public class SchoolController {
     }
 
     //根据寝室楼获得今日代拿列表
-    @RequestMapping(value="/student")
+    @RequestMapping(value="/order")
     @ResponseBody
     public List getStudentList(@RequestParam("dormitoryid") Integer dormitoryId)
     {
