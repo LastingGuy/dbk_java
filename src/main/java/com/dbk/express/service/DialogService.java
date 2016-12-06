@@ -53,41 +53,45 @@ public class DialogService<T> {
     public String dial(Integer[] pickupId)
     {
 
-
-        //查看该订单是否已经完成拨打，返回true为已拨打，返回false为未拨打
-        Boolean flag = dialogDAO.getFinishedDialog(pickupId);
-        System.out.println(flag);
-        if(flag==true){
-            return "";
-        }
-
-
-       /* //拨打电话
-        String url = "http://gw.api.tbsandbox.com/router/rest";
-        String appkey = "23531930";
-        String secret = "d2542deb5da568dc053201c8f6758c23";
-
-        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
-        AlibabaAliqinFcTtsNumSinglecallRequest req = new AlibabaAliqinFcTtsNumSinglecallRequest();
-        req.setExtend("12345");
-        req.setTtsParamString("");
-        req.setCalledNum("13732218844");
-        req.setCalledShowNum("01053912805");
-        req.setTtsCode("TTS_26080088");
-        AlibabaAliqinFcTtsNumSinglecallResponse rsp;
-        try {
-            rsp = client.execute(req);
-            System.out.println(rsp.getBody());
-        }
-        catch (Exception e)
+        for(int i = 0;i<pickupId.length;i++)
         {
-            e.printStackTrace();
+
+
+            //查看该订单是否已经完成拨打，返回true为已拨打，返回false为未拨打
+            Boolean flag = dialogDAO.getFinishedDialog(pickupId[i]);
+            System.out.println(flag);
+            if(flag==true){
+                return "";
+            }
+
+
+           /*
+            //拨打电话
+            String url = "http://gw.api.tbsandbox.com/router/rest";
+            String appkey = "23531930";
+            String secret = "d2542deb5da568dc053201c8f6758c23";
+
+            TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
+            AlibabaAliqinFcTtsNumSinglecallRequest req = new AlibabaAliqinFcTtsNumSinglecallRequest();
+            req.setExtend("12345");
+            req.setTtsParamString("");
+            req.setCalledNum("13732218844");
+            req.setCalledShowNum("01053912805");
+            req.setTtsCode("TTS_26080088");
+            AlibabaAliqinFcTtsNumSinglecallResponse rsp;
+            try {
+                rsp = client.execute(req);
+                System.out.println(rsp.getBody());
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            */
+
+            //插入拨打好的寝室
+            dialogDAO.insertDialog(pickupId[i]);
         }
-*/
-
-        //插入拨打好的寝室
-        dialogDAO.insertDialog(pickupId);
-
         return "";
 
     }
