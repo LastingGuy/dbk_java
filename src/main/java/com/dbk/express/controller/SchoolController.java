@@ -60,7 +60,7 @@ public class SchoolController {
     //按照单号进行拨打
     @RequestMapping(value="/d")
     @ResponseBody
-    public String dial(@RequestParam("pickupid") Integer pickupid)
+    public String dial(@RequestParam("pickupid") Integer[] pickupid)
     {
 
         dialogService.dial(pickupid);
