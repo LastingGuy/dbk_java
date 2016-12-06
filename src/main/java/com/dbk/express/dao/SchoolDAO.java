@@ -1,15 +1,15 @@
 package com.dbk.express.dao;
 
-import com.dbk.express.orm.DbkDormitoryEntity;
+import com.dbk.express.orm.DbkSchoolEntity;
+import com.sun.javafx.runtime.SystemProperties;
+import com.sun.javafx.scene.control.skin.IntegerFieldSkin;
 import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
-import java.util.List;
-
 /**
- * Created by lenovo on 2016/11/13.
+ * Created by lenovo on 2016/11/28.
  */
-public class DormitoryDAO<T> {
+public class SchoolDAO<T> {
     private HibernateTemplate hibernateTemplate;
     private SessionFactory sessionFactory;
 
@@ -29,11 +29,13 @@ public class DormitoryDAO<T> {
         this.sessionFactory = sessionFactory;
     }
 
-    //根据学校获取寝室楼集合
-    public List<DbkDormitoryEntity> getDorsBySchool(Integer schoolId)
-    {
-         List<DbkDormitoryEntity> list = (List<DbkDormitoryEntity>) this.hibernateTemplate.find("select d from DbkDormitoryEntity d where d.schoolId = ?",schoolId);
+    //获得学校
+    public DbkSchoolEntity getSchool(Integer schoolId){
+        if(schoolId==null){
+            return null;
+        }else{
+            return hibernateTemplate.get(DbkSchoolEntity.class, schoolId);
+        }
 
-        return list;
     }
 }

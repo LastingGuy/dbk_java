@@ -1,14 +1,13 @@
 package com.dbk.express.dao;
 
-import com.dbk.express.bean.DbkDormitoryDialogEntity;
+import com.dbk.express.orm.DbkDormitoryDialogEntity;
 import org.hibernate.SessionFactory;
-import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.SimpleFormatter;
 
 /**
  * Created by lenovo on 2016/11/13.
@@ -35,18 +34,33 @@ public class DialogDAO<T> {
         this.sessionFactory = sessionFactory;
     }
 
-    //根据时间和寝室楼号获取已经拨打的情况
-    public Boolean getFinishedDialog(String dormitoryId)
+    //根据订单号获取已经拨打的情况
+    public Boolean getFinishedDialog(Integer pickupId)
     {
         Date date = new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String today = df.format(date);
-        System.out.println(dormitoryId);
-        List<?> objects = hibernateTemplate.find("select c from DbkDormitoryDialogEntity c where date='"+ today +"' and dormitory_id=?",dormitoryId);
-        if(objects==null)
-            return false;
-        else
+        List<?> objects = hibernateTemplate.find("from DbkDormitoryDialogEntity c where c.pickupId=? ",pickupId);
+
+        //找到返回true，没找到返回false
+        if(objects.size()==1)
             return true;
+        else
+            return false;
+    }
+
+    //插入拨打后的寝室号
+    public void insertDialog(Integer pickupId)
+    {
+        Date date = new Date();
+
+
+        DbkDormitoryDialogEntity dbkDormitoryDialogEntity= new DbkDormitoryDialogEntity();
+        dbkDormitoryDialogEntity.setPickupId(pickupId);
+        dbkDormitoryDialogEntity.setDialogTime(new Timestamp(date.getTime()));
+
+        hibernateTemplate.save(dbkDormitoryDialogEntity);
+
     }
 }
 

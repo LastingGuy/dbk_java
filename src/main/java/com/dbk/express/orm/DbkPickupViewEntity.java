@@ -1,4 +1,4 @@
-package com.dbk.express.bean;
+package com.dbk.express.orm;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -24,7 +24,7 @@ public class DbkPickupViewEntity {
     private String receiverName;
     private String receiverPhone;
     private String remarks;
-    private Timestamp time;
+    private Timestamp payTime;
     private String openid;
 
     @Basic
@@ -178,13 +178,13 @@ public class DbkPickupViewEntity {
     }
 
     @Basic
-    @Column(name = "time")
-    public Timestamp getTime() {
-        return time;
+    @Column(name = "pay_time")
+    public Timestamp getPayTime() {
+        return payTime;
     }
 
-    public void setTime(Timestamp time) {
-        this.time = time;
+    public void setPayTime(Timestamp payTime) {
+        this.payTime = payTime;
     }
 
     @Basic
@@ -222,7 +222,7 @@ public class DbkPickupViewEntity {
         if (receiverPhone != null ? !receiverPhone.equals(that.receiverPhone) : that.receiverPhone != null)
             return false;
         if (remarks != null ? !remarks.equals(that.remarks) : that.remarks != null) return false;
-        if (time != null ? !time.equals(that.time) : that.time != null) return false;
+        if (payTime != null ? !payTime.equals(that.payTime) : that.payTime != null) return false;
         if (openid != null ? !openid.equals(that.openid) : that.openid != null) return false;
 
         return true;
@@ -245,7 +245,7 @@ public class DbkPickupViewEntity {
         result = 31 * result + (receiverName != null ? receiverName.hashCode() : 0);
         result = 31 * result + (receiverPhone != null ? receiverPhone.hashCode() : 0);
         result = 31 * result + (remarks != null ? remarks.hashCode() : 0);
-        result = 31 * result + (time != null ? time.hashCode() : 0);
+        result = 31 * result + (payTime != null ? payTime.hashCode() : 0);
         result = 31 * result + (openid != null ? openid.hashCode() : 0);
         return result;
     }

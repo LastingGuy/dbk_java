@@ -1,34 +1,33 @@
 package com.dbk.express.controller;
 
-import com.dbk.express.bean.DbkAdminEntity;
-import com.dbk.express.bean.DbkDormitoryEntity;
-import com.dbk.express.dao.AdminDAO;
-import com.dbk.express.dao.DialogDAO;
-import com.dbk.express.dao.DormitoryDAO;
-import com.dbk.express.service.AdminService;
+import com.dbk.express.bean.SchoolDormitory;
+import com.dbk.express.orm.DbkAdminEntity;
+import com.dbk.express.service.SchoolService;
 import com.dbk.express.service.DialogService;
-import com.dbk.express.service.DormitoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by lenovo on 2016/11/10.
  */
+
 @Controller
+@SessionAttributes({"admin"})
 public class SchoolController {
 
     @Autowired
     private DialogService dialogService;
 
     @Autowired
-    private AdminService adminService;
+    private SchoolService schoolService;
 
     public DialogService getDialogService() {
         return dialogService;
@@ -38,37 +37,41 @@ public class SchoolController {
         this.dialogService = dialogService;
     }
 
+    public SchoolService getSchoolService() {
+        return schoolService;
+    }
+
+    public void setSchoolService(SchoolService schoolService) {
+        this.schoolService = schoolService;
+    }
+
     //获取学校及寝室楼，以及是否完成拨打的数据
     @RequestMapping(value="/school")
     @ResponseBody
-    public String getSchoolAndDormitory(HttpServletResponse response)
+    public SchoolDormitory getSchoolAndDormitory(@ModelAttribute("admin") DbkAdminEntity admin,HttpSession session)
     {
-        /*DbkAdminEntity admin = new DbkAdminEntity();
-        admin.setAdminId("浙江工业大学");
-        admin.setAdminPasswd("123456");
-        admin.setAdminSchool(1);
-
-        adminService.create(admin);*/
-
-        response.setHeader("Access-Control-Allow-Origin","*");
-        return "index";
+        //DbkAdminEntity admin = (DbkAdminEntity) session.getAttribute("admin");
+        System.out.println(admin.getAdminPasswd());
+        //return null;
+        return schoolService.getSchoolandDormitory(admin.getAdminSchool());
     }
 
-    //获得寝室信息
-    @RequestMapping(value = "getDors")
-    @ResponseBody
-    public String getDors()
-    {
-        Boolean flag = dialogService.getFinishedDialog("2");
-        return flag.toString();
-    }
 
-    //根据寝室号完成一键拨打
+    //按照单号进行拨打
     @RequestMapping(value="/d")
     @ResponseBody
-    public String dial()
+    public String dial(@RequestParam("pickupid") Integer pickupid)
     {
-        dialogService.dial();
+
+        dialogService.dial(pickupid);
         return "sadsada";
+    }
+
+    //根据寝室楼获得今日代拿列表
+    @RequestMapping(value="/student")
+    @ResponseBody
+    public List getStudentList(@RequestParam("dormitoryid") Integer dormitoryId)
+    {
+        return schoolService.getPickup(dormitoryId);
     }
 }
