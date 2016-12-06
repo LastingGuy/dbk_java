@@ -1,4 +1,4 @@
-package com.dbk.express.bean;
+package com.dbk.express.orm;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

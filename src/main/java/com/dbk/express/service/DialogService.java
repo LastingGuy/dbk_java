@@ -3,11 +3,17 @@ package com.dbk.express.service;
 import com.dbk.express.dao.AdminDAO;
 import com.dbk.express.dao.DialogDAO;
 import com.dbk.express.dao.DormitoryDAO;
+import com.dbk.express.dao.PickupDAO;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.AlibabaAliqinFcTtsNumSinglecallRequest;
 import com.taobao.api.response.AlibabaAliqinFcTtsNumSinglecallResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.util.comparator.BooleanComparator;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by lenovo on 2016/11/11.
@@ -17,6 +23,7 @@ public class DialogService<T> {
 
     private DialogDAO<T> dialogDAO;
     private DormitoryDAO<T> dormitoryDAO;
+    private PickupDAO<T> pickupDAO;
 
     public DialogDAO<T> getDialogDAO() {
         return dialogDAO;
@@ -30,19 +37,32 @@ public class DialogService<T> {
         return dormitoryDAO;
     }
 
-    public void setDormitoryDAO(DormitoryDAO dormitoryDAO) {
+    public void setDormitoryDAO(DormitoryDAO<T> dormitoryDAO) {
         this.dormitoryDAO = dormitoryDAO;
     }
 
-    public String getSchoolAndDormitory()
-    {
-        return "";
+    public PickupDAO<T> getPickupDAO() {
+        return pickupDAO;
+    }
+
+    public void setPickupDAO(PickupDAO<T> pickupDAO) {
+        this.pickupDAO = pickupDAO;
     }
 
     //拨打电话
-    public String dial()
+    public String dial(Integer[] pickupId)
     {
 
+
+        //查看该订单是否已经完成拨打，返回true为已拨打，返回false为未拨打
+        Boolean flag = dialogDAO.getFinishedDialog(pickupId);
+        System.out.println(flag);
+        if(flag==true){
+            return "";
+        }
+
+
+       /* //拨打电话
         String url = "http://gw.api.tbsandbox.com/router/rest";
         String appkey = "23531930";
         String secret = "d2542deb5da568dc053201c8f6758c23";
@@ -63,11 +83,14 @@ public class DialogService<T> {
         {
             e.printStackTrace();
         }
+*/
+
+        //插入拨打好的寝室
+        dialogDAO.insertDialog(pickupId);
 
         return "";
+
     }
 
-    public Boolean getFinishedDialog(String id){
-        return dialogDAO.getFinishedDialog(id);
-    }
+
 }

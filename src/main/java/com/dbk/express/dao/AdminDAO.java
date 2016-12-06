@@ -1,7 +1,6 @@
 package com.dbk.express.dao;
 
-import com.dbk.express.util.HibernateUtil;
-import org.hibernate.Session;
+import com.dbk.express.orm.DbkAdminEntity;
 import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
@@ -40,6 +39,7 @@ public class AdminDAO<T> {
        this.hibernateTemplate.getSessionFactory().getCurrentSession().save(object);
     }
 
+<<<<<<< HEAD
     //登陆
     public boolean login(String username,String passwd)
     {
@@ -51,5 +51,11 @@ public class AdminDAO<T> {
     {
         String name = (String)this.hibernateTemplate.find("select school.schoolName from DbkAdminEntity admin,DbkSchoolEntity school where admin.adminSchool = school.schoolId and admin.adminId=?",id).get(0);
         return name;
+=======
+    //查找
+    public DbkAdminEntity find(String adminId){
+        return  this.hibernateTemplate.get(DbkAdminEntity.class,adminId);
+>>>>>>> master
     }
+
 }

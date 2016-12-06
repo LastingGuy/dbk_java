@@ -1,11 +1,9 @@
 package com.dbk.express.service;
 
+import com.dbk.express.orm.DbkAdminEntity;
 import com.dbk.express.dao.AdminDAO;
 import com.dbk.express.dao.DormitoryDAO;
-import org.apache.commons.collections.map.HashedMap;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 /**
  * Created by lenovo on 2016/11/11.
@@ -34,13 +32,22 @@ public class AdminService<T> {
         adminDAO.create(object);
     }
 
-    public Map<String, Object> getSchoolNameAndDorsByAdminID(String id)
-    {
-        Map<String,Object> map = new HashedMap();
-        map.put("school",adminDAO.getSchoolNameByAdminID(id));
-        map.put("dors",dormitoryDAO.getDorsByAdminID(id));
+    //验证账号密码
+    public DbkAdminEntity verify(String userid, String passwd){
 
-        return map;
+        //验证账号密码
+        DbkAdminEntity admin = adminDAO.find(userid);
+
+        //无此账号
+        if(admin==null){
+            return null;
+        }
+
+        if(!admin.getAdminPasswd().equals(passwd)){
+            return null;
+        }
+
+        return admin;
     }
 
     //登陆

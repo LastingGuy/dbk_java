@@ -1,4 +1,7 @@
-package com.dbk.express.bean;
+package com.dbk.express.orm;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -9,7 +12,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "dbk_pickup", schema = "dbk_express_test", catalog = "")
 public class DbkPickupEntity {
-    private int pickupId;
+    private Integer pickupId;
     private String openid;
     private String receiverName;
     private String receiverPhone;
@@ -20,9 +23,9 @@ public class DbkPickupEntity {
     private String expressCode;
     private String remarks;
     private int price;
-    private Timestamp time;
+    private Timestamp payTime;
     private byte expressStatus;
-
+    private DbkDormitoryDialogEntity dormitoryDialogEntity;
     @Id
     @Column(name = "pickup_id")
     public int getPickupId() {
@@ -134,13 +137,13 @@ public class DbkPickupEntity {
     }
 
     @Basic
-    @Column(name = "time")
-    public Timestamp getTime() {
-        return time;
+    @Column(name = "pay_time")
+    public Timestamp getPayTime() {
+        return payTime;
     }
 
-    public void setTime(Timestamp time) {
-        this.time = time;
+    public void setPayTime(Timestamp payTime) {
+        this.payTime = payTime;
     }
 
     @Basic
@@ -151,6 +154,17 @@ public class DbkPickupEntity {
 
     public void setExpressStatus(byte expressStatus) {
         this.expressStatus = expressStatus;
+    }
+
+    @OneToOne(optional=true,cascade =CascadeType.ALL)/*(mappedBy="dbkPickupEntity")*/
+    @JoinColumn(name="pickup_id",referencedColumnName="pickup_id")
+    @NotFound(action= NotFoundAction.IGNORE)
+    public DbkDormitoryDialogEntity getDormitoryDialogEntity() {
+        return dormitoryDialogEntity;
+    }
+
+    public void setDormitoryDialogEntity(DbkDormitoryDialogEntity dormitoryDialogEntity) {
+        this.dormitoryDialogEntity = dormitoryDialogEntity;
     }
 
     @Override
@@ -174,9 +188,9 @@ public class DbkPickupEntity {
         if (expressSms != null ? !expressSms.equals(that.expressSms) : that.expressSms != null) return false;
         if (expressCode != null ? !expressCode.equals(that.expressCode) : that.expressCode != null) return false;
         if (remarks != null ? !remarks.equals(that.remarks) : that.remarks != null) return false;
-        if (time != null ? !time.equals(that.time) : that.time != null) return false;
+        if (payTime != null ? !payTime.equals(that.payTime) : that.payTime != null) return false;
+        return dormitoryDialogEntity != null ? dormitoryDialogEntity.equals(that.dormitoryDialogEntity) : that.dormitoryDialogEntity == null;
 
-        return true;
     }
 
     @Override
@@ -192,8 +206,9 @@ public class DbkPickupEntity {
         result = 31 * result + (expressCode != null ? expressCode.hashCode() : 0);
         result = 31 * result + (remarks != null ? remarks.hashCode() : 0);
         result = 31 * result + price;
-        result = 31 * result + (time != null ? time.hashCode() : 0);
+        result = 31 * result + (payTime != null ? payTime.hashCode() : 0);
         result = 31 * result + (int) expressStatus;
+        result = 31 * result + (dormitoryDialogEntity != null ? dormitoryDialogEntity.hashCode() : 0);
         return result;
     }
 }

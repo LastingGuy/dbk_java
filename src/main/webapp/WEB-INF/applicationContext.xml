@@ -36,11 +36,12 @@
         destroy-method="destroy">
         <property name="dataSource" ref="dataSource" />
         <!-- 该包下所有的类会被当作实体类加载-->
-        <property name="packagesToScan" value="com.dbk.express.bean" />
+        <property name="packagesToScan" value="com.dbk.express.orm" />
         <property name="hibernateProperties">
             <props>    <!--  Hibernate属性 -->
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
                 <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate3.SpringSessionContext</prop>
             </props>
         </property>
     </bean>
@@ -63,7 +64,7 @@
     </tx:advice>
     <!-- 定义事务入口 -->
     <aop:config>
-        <aop:pointcut id="allDaoMethod" expression="execution(* com.dbk.express.dao.*.*(..))" />
+        <aop:pointcut id="allDaoMethod" expression="execution(* com.dbk.express.service.*.*(..))" />
         <aop:advisor advice-ref="txAdvice" pointcut-ref="allDaoMethod" />
     </aop:config>
 
@@ -85,17 +86,30 @@
         <property name="hibernateTemplate" ref="hibernateTemplate" />
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
+    <bean id="pickupDAO" class="com.dbk.express.dao.PickupDAO" >
+        <property name="hibernateTemplate" ref="hibernateTemplate" />
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="schoolDAO" class="com.dbk.express.dao.SchoolDAO" >
+        <property name="hibernateTemplate" ref="hibernateTemplate" />
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
 
     <!-- Service层配置 -->
     <bean id="adminService" class="com.dbk.express.service.AdminService">
         <property name="adminDAO" ref="adminDAO" />
+        <property name="dormitoryDAO" ref="dormitoryDAO" />
     </bean>
     <bean id="dialogService" class="com.dbk.express.service.DialogService">
         <property name="dialogDAO" ref="dialogDAO" />
         <property name="dormitoryDAO" ref="dormitoryDAO" />
+        <property name="pickupDAO" ref="pickupDAO" />
     </bean>
-    <bean id="dormitoryService" class="com.dbk.express.service.DormitoryService">
+    <bean id="schoolService" class="com.dbk.express.service.SchoolService">
+        <property name="dialogDAO" ref="dialogDAO" />
         <property name="dormitoryDAO" ref="dormitoryDAO" />
+        <property name="schoolDAO" ref="schoolDAO" />
+        <property name="pickupDAO" ref="pickupDAO" />
     </bean>
 </beans>
 
