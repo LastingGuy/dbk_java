@@ -49,4 +49,10 @@ public class AdminService<T> {
 
         return admin;
     }
+
+    //登陆
+    public boolean login(String username,String passwd)
+    {
+        return adminDAO.login(username, passwd);
+    }
 }
