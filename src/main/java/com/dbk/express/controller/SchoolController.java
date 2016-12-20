@@ -7,6 +7,7 @@ import com.dbk.express.service.SchoolService;
 import com.dbk.express.service.DialogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
@@ -90,4 +91,14 @@ public class SchoolController {
         return errCode.OK.getResponseGenerator("getOrders").setBody(orders).generate();
 
     }
+
+    //通过配合@ResponseBody来将内容或者对象作为HTTP响应正文返回（适合做即时校验）；
+    @RequestMapping(value = "/valid", method = RequestMethod.GET)
+    @ResponseBody
+    public String valid(@RequestParam(value = "userId", required = false) Integer userId,
+                        @RequestParam(value = "name") String name, Model model) {
+        model.addAttribute("haha","haha");
+        return String.valueOf(true);
+    }
+
 }
