@@ -3,6 +3,7 @@ package com.dbk.express.service;
 import com.dbk.express.orm.DbkAdminEntity;
 import com.dbk.express.dao.AdminDAO;
 import com.dbk.express.dao.DormitoryDAO;
+import com.dbk.express.pojo.errorCode.LoginErrCode;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,21 +34,24 @@ public class AdminService<T> {
     }
 
     //验证账号密码
-    public DbkAdminEntity verify(String userid, String passwd){
+    public LoginErrCode verify(String userid, String passwd, DbkAdminEntity admin){
 
         //验证账号密码
-        DbkAdminEntity admin = adminDAO.find(userid);
+        DbkAdminEntity temp = adminDAO.find(userid);
 
         //无此账号
-        if(admin==null){
-            return null;
+        if(temp==null){
+            return LoginErrCode.NO_SUCH_ACCOUNT;
         }
 
-        if(!admin.getAdminPasswd().equals(passwd)){
-            return null;
+        if(!temp.getAdminPasswd().equals(passwd)){
+            return LoginErrCode.PASSWORD_IS_WRONG;
         }
 
-        return admin;
+        admin.setAdminId(temp.getAdminId());
+        admin.setAdminPasswd(temp.getAdminPasswd());
+        admin.setAdminSchool(temp.getAdminSchool());
+        return LoginErrCode.SUCCESS_TO_LOGIN;
     }
 
 

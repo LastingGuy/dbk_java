@@ -4,7 +4,11 @@ import com.dbk.express.orm.DbkAdminEntity;
 import com.dbk.express.dao.AdminDAO;
 import com.dbk.express.pojo.ResponseGenerator;
 
+import com.dbk.express.pojo.errorCode.LoginErrCode;
+import com.dbk.express.pojo.errorCode.errCode;
 import com.dbk.express.service.AdminService;
+import com.mysql.jdbc.log.Log;
+import com.sun.javafx.collections.MappingChange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 
 /**
@@ -46,7 +51,7 @@ public class AdminController {
         /*DbkAdminEntity admin = new DbkAdminEntity();
         admin.setAdminId("浙江工业大学");
         admin.setAdminPasswd("123456");
-        admin.setAdminSchool(1);
+        admin.usetAdminSchool(1);
 
         adminService.create(admin);*/
         return null;
@@ -55,13 +60,17 @@ public class AdminController {
 
     @RequestMapping(value="/login" )
     @ResponseBody
-    public String login(String userid, String passwd, ModelMap model, HttpSession session)
+    public Map login(String userid, String passwd, ModelMap model)
     {
 
-        DbkAdminEntity admin = adminService.verify(userid,passwd);
-        model.addAttribute("admin",admin);
-        //session.setAttribute("admin",admin);
-        return "haha";
+        DbkAdminEntity admin = new DbkAdminEntity();
+        LoginErrCode errCode = adminService.verify(userid,passwd,admin);
+        if(errCode == LoginErrCode.SUCCESS_TO_LOGIN)         //登录成功，记录session
+        {
+            model.addAttribute("admin",admin);
+        }
+
+        return errCode.getResponseGenerator().generate();
 
     }
 }

@@ -1,19 +1,16 @@
 package com.dbk.express.controller;
 
-import com.dbk.express.bean.SchoolDormitory;
 import com.dbk.express.orm.DbkAdminEntity;
+import com.dbk.express.pojo.errorCode.errCode;
 import com.dbk.express.service.SchoolService;
 import com.dbk.express.service.DialogService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 /**
  * Created by lenovo on 2016/11/10.
@@ -48,12 +45,20 @@ public class SchoolController {
     //获取学校及寝室楼，以及是否完成拨打的数据
     @RequestMapping(value="/school")
     @ResponseBody
-    public SchoolDormitory getSchoolAndDormitory(@ModelAttribute("admin") DbkAdminEntity admin,HttpSession session)
+    public Map getSchoolAndDormitory(ModelMap model)
     {
-        //DbkAdminEntity admin = (DbkAdminEntity) session.getAttribute("admin");
-        System.out.println(admin.getAdminPasswd());
-        //return null;
-        return schoolService.getSchoolandDormitory(admin.getAdminSchool());
+        DbkAdminEntity admin = (DbkAdminEntity) model.get("admin");
+        if(admin==null)
+        {
+            return errCode.NOT_LOGIN.getResponseGenerator("getSchoolAndDormitory").generate();
+        }
+        Object body = schoolService.getSchoolandDormitory(admin.getAdminSchool());
+        if(body==null)
+        {
+            return  errCode.FAIL.getResponseGenerator("getSchoolAndDormitory")
+                    .setMsg("no dormitory information").generate();
+        }
+        return errCode.OK.getResponseGenerator("getSchoolAndDormitory").setBody(body).generate();
     }
 
 
@@ -70,8 +75,15 @@ public class SchoolController {
     //根据寝室楼获得今日代拿列表
     @RequestMapping(value="/order")
     @ResponseBody
-    public List getStudentList(@RequestParam("dormitoryid") Integer dormitoryId)
+    public Map getStudentList(@RequestParam("dormitoryid") Integer dormitoryId,ModelMap model)
     {
-        return schoolService.getPickup(dormitoryId);
+        if(model.get("admin")==null)
+        {
+            return errCode.NOT_LOGIN.getResponseGenerator("getOrders").generate();
+        }
+
+        Object orders = schoolService.getPickup(dormitoryId);
+        return errCode.OK.getResponseGenerator("getOrders").setBody(orders).generate();
+
     }
 }

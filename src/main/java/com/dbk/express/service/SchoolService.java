@@ -68,20 +68,28 @@ public class SchoolService<T> {
     }*/
 
     //得到该用户的学校，寝室信息
-    public SchoolDormitory getSchoolandDormitory(Integer schoolId){
+    public SchoolDormitory getSchoolandDormitory(Integer schoolId)
+    {
+        try
+        {
+            SchoolDormitory schoolDormitory = new SchoolDormitory();
 
-        SchoolDormitory schoolDormitory = new SchoolDormitory();
+            //获得学校名字
+            DbkSchoolEntity dbkSchoolEntity = schoolDAO.getSchool(schoolId);
+            schoolDormitory.setSchoolId(dbkSchoolEntity.getSchoolId());
+            schoolDormitory.setSchoolName(dbkSchoolEntity.getSchoolName());
 
-        //获得学校名字
-        DbkSchoolEntity dbkSchoolEntity = schoolDAO.getSchool(schoolId);
-        schoolDormitory.setSchoolId(dbkSchoolEntity.getSchoolId());
-        schoolDormitory.setSchoolName(dbkSchoolEntity.getSchoolName());
+            //获得学校寝室
+            List<DbkDormitoryEntity> list = dormitoryDAO.getDorsBySchool(schoolId);
+            schoolDormitory.setDormitories(list);
 
-        //获得学校寝室
-        List<DbkDormitoryEntity> list = dormitoryDAO.getDorsBySchool(schoolId);
-        schoolDormitory.setDormitories(list);
-
-        return schoolDormitory;
+            return schoolDormitory;
+        }
+        catch (NullPointerException e)
+        {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     //得到某寝室的订单
@@ -89,7 +97,8 @@ public class SchoolService<T> {
         //
         List<DbkPickupEntity> list = pickupDAO.getPickupToday(dormitoryId);
         List<Object[]> list2 = new ArrayList<Object[]>();
-        for(DbkPickupEntity pickup:list){
+        for(DbkPickupEntity pickup:list)
+        {
             Object[] objects = new Object[3];
             if(pickup.getDormitoryDialogEntity()!=null){
                 objects[0] = pickup.getReceiverName();

@@ -37,9 +37,11 @@ public class PickupDAO<T> {
         //设置时间段
         SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd ");
         String today = df.format(new Date()) + "16:00:00";
+//        String today = "2016-11-20 16:00:00";
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE,-1);
         String yesterday = new SimpleDateFormat("yyyy-MM-dd ").format(cal.getTime()) + "16:00:00";
+//        String yesterday = "2016-11-19 16:00:00";
         Timestamp todayDate = Timestamp.valueOf(today);
         Timestamp yesterdayDate = Timestamp.valueOf(yesterday);
 

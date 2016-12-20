@@ -60,7 +60,8 @@ public class DialogService<T> {
             //查看该订单是否已经完成拨打，返回true为已拨打，返回false为未拨打
             Boolean flag = dialogDAO.getFinishedDialog(pickupId[i]);
             System.out.println(flag);
-            if(flag==true){
+            if(flag==true)
+            {
                 return "";
             }
 
