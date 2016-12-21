@@ -1,6 +1,7 @@
 package com.dbk.express.dao;
 
 import com.dbk.express.orm.DbkPickupEntity;
+import com.dbk.express.orm.DbkPickupViewEntity;
 import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
@@ -54,5 +55,12 @@ public class PickupDAO<T> {
         List<DbkPickupEntity> list = (List<DbkPickupEntity>)hibernateTemplate.find(hql,new Object[]{yesterdayDate,todayDate,dormitoryId});
         return list;
 
+    }
+
+    public DbkPickupViewEntity getOrderDetail(Integer orderID)
+    {
+//        String hql = "select o from DbkpickupViewEntity as o where o.pickup_id=?";
+
+        return (DbkPickupViewEntity)hibernateTemplate.get(DbkPickupViewEntity.class,orderID);
     }
 }

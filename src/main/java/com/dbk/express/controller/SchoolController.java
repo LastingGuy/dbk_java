@@ -1,6 +1,7 @@
 package com.dbk.express.controller;
 
 import com.dbk.express.orm.DbkAdminEntity;
+import com.dbk.express.pojo.errorCode.dialErrCode;
 import com.dbk.express.pojo.errorCode.errCode;
 import com.dbk.express.service.SchoolService;
 import com.dbk.express.service.DialogService;
@@ -65,11 +66,14 @@ public class SchoolController {
     //按照单号进行拨打
     @RequestMapping(value="/dial")
     @ResponseBody
-    public String dial(@RequestParam("pickupid") Integer[] pickupid)
+    public Map dial(@RequestParam("pickupid") Integer[] pickupid,ModelMap model)
     {
+        if(model.get("admin")==null)
+        {
+            return dialErrCode.NOT_LOGIN.getResponseGenerator().generate();
+        }
+        return dialogService.dial(pickupid).getResponseGenerator().generate();
 
-        dialogService.dial(pickupid);
-        return "sadsada";
     }
 
     //根据寝室楼获得今日代拿列表

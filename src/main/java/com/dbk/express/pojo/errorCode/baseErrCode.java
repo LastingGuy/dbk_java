@@ -1,8 +1,6 @@
 package com.dbk.express.pojo.errorCode;
 
 import com.dbk.express.pojo.ResponseGenerator;
-import com.sun.tools.classfile.StackMapTable_attribute;
-import com.sun.xml.internal.bind.annotation.OverrideAnnotationOf;
 
 /**
  * Created by ben on 19/12/2016.
@@ -23,13 +21,6 @@ public abstract class baseErrCode
         FailToLogIn, //登录失败
         PasswordIsWrong, //密码错误
         NoSuchAccount,   //无此账户
-
-        //呼叫用户
-        AlreadyDial,     //已经呼叫过此用户
-        FailToDial   ,   //呼叫失败
-        SuccessTODial,   //呼叫成功
-
-
 
     }
 

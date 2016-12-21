@@ -11,9 +11,7 @@ import com.dbk.express.orm.DbkSchoolEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.ObjectError;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by lenovo on 2016/11/23.
@@ -96,19 +94,20 @@ public class SchoolService<T> {
     public List getPickup(Integer dormitoryId){
         //
         List<DbkPickupEntity> list = pickupDAO.getPickupToday(dormitoryId);
-        List<Object[]> list2 = new ArrayList<Object[]>();
+        List<Map> list2 = new ArrayList<Map>();
         for(DbkPickupEntity pickup:list)
         {
-            Object[] objects = new Object[3];
-            if(pickup.getDormitoryDialogEntity()!=null){
-                objects[0] = pickup.getReceiverName();
-                objects[1] = pickup.getReceiverPhone();
-                objects[2] = pickup.getDormitoryDialogEntity().getDialogTime();
+            Map<String,Object> objects = new HashMap<String, Object>();
+
+            objects.put("name",pickup.getReceiverName());
+            objects.put("phone",pickup.getReceiverPhone());
+            objects.put("orderID",pickup.getPickupId());
+            if(pickup.getDormitoryDialogEntity()!=null)
+            {
+                objects.put("dialTime",pickup.getDormitoryDialogEntity().getDialogTime());
             }
             else{
-                objects[0] = pickup.getReceiverName();
-                objects[1] = pickup.getReceiverPhone();
-                objects[2] = null;
+                objects.put("dialTime",null);
             }
             list2.add(objects);
         }
